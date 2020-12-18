@@ -1,3 +1,4 @@
+import numpy as np
 import matplotlib.pyplot as plt
 
 from numpy.random import default_rng
@@ -13,3 +14,6 @@ x = rng.normal(size=(NUM_SAMPLES, DIM))
 
 plt.scatter(x[:, 0], x[:, 1])
 plt.show()
+
+# save the data into csv file with 5 decimals
+np.savetxt("normal.csv", x, delimiter=",", fmt="%.5f")

@@ -12,3 +12,6 @@ __pycache__
 
 # Pyenv
 .python-version
+
+# CSV files with the data points
+*.csv
