@@ -9,7 +9,7 @@ NUM_SAMPLES = 1000
 rng = default_rng(1)
 
 # The desired mean values
-mean = [1, 1]
+mean = [5, 5]
 # The desired covariance matrix
 cov = [
     [3.5, 2.6],
