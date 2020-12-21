@@ -10,7 +10,6 @@ object Main {
       .appName("Skyline Dominance Spark app")
       .getOrCreate()
 
-    val PARTITIONS = 3
     val sfs = SFS
     var globalSkyline: Set[Row] = Set()
 
@@ -21,7 +20,7 @@ object Main {
 
     // First point of the sorted df is in the skyline
     globalSkyline += sortedSumDF.first()
-
+    sfs.computeLocalSkyline(sortedSumDF)
     println(globalSkyline)
 
   }
