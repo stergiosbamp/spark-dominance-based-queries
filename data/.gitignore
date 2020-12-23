@@ -1,0 +1,17 @@
+# Python virtual environment
+env/
+venv/
+
+# IDE configs
+.idea/
+.vscode/
+
+# Python cache files
+__pycache__
+*.pyc
+
+# Pyenv
+.python-version
+
+# CSV files with the data points
+*.csv
