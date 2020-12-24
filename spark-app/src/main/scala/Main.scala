@@ -2,8 +2,6 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.functions.col
 import org.apache.spark.util.CollectionAccumulator
 
-import scala.collection.mutable
-
 
 object Main {
 
