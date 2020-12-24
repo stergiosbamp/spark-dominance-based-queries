@@ -11,15 +11,15 @@ object Main {
       .appName("Skyline Dominance Spark app")
       .getOrCreate()
 
-
     val df = spark.read.option("inferSchema", "true").csv("src/main/resources/mock-datapoints.csv")
-    val skylineAccumulator = spark.sparkContext.collectionAccumulator[Row]("skylineAccumulator")
 
-    skylineQuery(skylineAccumulator, df)
-
+    skylineQuery(spark, df)
   }
 
-  def skylineQuery(skylineAccumulator: CollectionAccumulator[Row], df: DataFrame): Unit = {
+  def skylineQuery(spark: SparkSession, df: DataFrame): Unit = {
+    // In each skyline query accumulator must be re-created
+    val skylineAccumulator = spark.sparkContext.collectionAccumulator[Row]("skylineAccumulator")
+
     val sumDF = df.withColumn("sum", df.columns.map(c => col(c)).reduce((c1, c2) => c1 + c2))
     val sortedSumDF = sumDF.sort(col("sum").asc)
 
