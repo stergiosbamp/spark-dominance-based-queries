@@ -1,3 +1,5 @@
+import java.util
+
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.functions.col
 import org.apache.spark.util.CollectionAccumulator
@@ -13,10 +15,13 @@ object Main {
 
     val df = spark.read.option("inferSchema", "true").csv("src/main/resources/mock-datapoints.csv")
 
-    skylineQuery(spark, df)
+//    val skylineSet = skylineQuery(spark, df)
+//    println(s"Skyline set is: ${skylineSet}")
+
+    topKDominating(2, spark, df)
   }
 
-  def skylineQuery(spark: SparkSession, df: DataFrame): Unit = {
+  def skylineQuery(spark: SparkSession, df: DataFrame): util.List[Row] = {
     // In each skyline query accumulator must be re-created
     val skylineAccumulator = spark.sparkContext.collectionAccumulator[Row]("skylineAccumulator")
 
@@ -25,12 +30,13 @@ object Main {
 
     val sfs = SFS
     sfs.computeLocalSkyline(sortedSumDF, skylineAccumulator)
-
-    println(s"Skyline set is: ${skylineAccumulator.value}")
+    skylineAccumulator.value
   }
 
-  def topKDominating(k: Int): Unit = {
-    Unit
+  def topKDominating(k: Int, spark: SparkSession, df: DataFrame): Unit = {
+    val skylinePoints = skylineQuery(spark, df)
+    println(skylinePoints)
+
   }
 
 }
