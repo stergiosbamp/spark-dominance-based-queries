@@ -18,7 +18,7 @@ object Main {
 //    val skylineSet = skylineQuery(spark, df)
 //    println(s"Skyline set is: ${skylineSet}")
 
-    topKDominating(2, spark, df)
+    topKDominating(4, spark, df)
   }
 
   def skylineQuery(spark: SparkSession, df: DataFrame): util.List[Row] = {
@@ -34,20 +34,26 @@ object Main {
   }
 
   def topKDominating(k: Int, spark: SparkSession, df: DataFrame): Unit = {
-    val skylinePoints = skylineQuery(spark, df)
-    val domination = Domination
-    val scoreAcc = spark.sparkContext.longAccumulator("Score accumulator")
-    var dominatingMap = Map[Row, Long]()
-    skylinePoints.forEach( row => {
-      scoreAcc.reset()
-      domination.dominantScore(row, df, scoreAcc)
-      dominatingMap = dominatingMap + (row -> scoreAcc.value)
-    })
+    var changingDf = df
+    for (i <- 1 to k) {
+      val skylinePoints = skylineQuery(spark, changingDf)
+      val domination = Domination
+      val scoreAcc = spark.sparkContext.longAccumulator("Score accumulator")
+      var dominatingMap = Map[Row, Long]()
+      skylinePoints.forEach( row => {
+        scoreAcc.reset()
+        domination.dominantScore(row, changingDf, scoreAcc)
+        dominatingMap = dominatingMap + (row -> scoreAcc.value)
+      })
 
-    // sort points by the dominance score
-    val sortedDominatingMap = dominatingMap.toSeq.sortWith(_._2 > _._2)
-    println(sortedDominatingMap)
+      // sort points by the dominance score
+      val sortedDominatingMap = dominatingMap.toSeq.sortWith(_._2 > _._2)
+      val (topPoint, topValue) = sortedDominatingMap.head
+      println(s"Top-$i is point $topPoint with dominance score $topValue")
 
+      // Remove top point from dataset and repeat
+      changingDf = changingDf.filter(r => !r.getDouble(0).equals(topPoint.getDouble(0)) && !r.getDouble(1).equals(topPoint.getDouble(1)))
+    }
   }
 
 }
