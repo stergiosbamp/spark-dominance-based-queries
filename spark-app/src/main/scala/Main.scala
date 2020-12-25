@@ -35,7 +35,18 @@ object Main {
 
   def topKDominating(k: Int, spark: SparkSession, df: DataFrame): Unit = {
     val skylinePoints = skylineQuery(spark, df)
-    println(skylinePoints)
+    val domination = Domination
+    val scoreAcc = spark.sparkContext.longAccumulator("Score accumulator")
+    var dominatingMap = Map[Row, Long]()
+    skylinePoints.forEach( row => {
+      scoreAcc.reset()
+      domination.dominantScore(row, df, scoreAcc)
+      dominatingMap = dominatingMap + (row -> scoreAcc.value)
+    })
+
+    // sort points by the dominance score
+    val sortedDominatingMap = dominatingMap.toSeq.sortWith(_._2 > _._2)
+    println(sortedDominatingMap)
 
   }
 
