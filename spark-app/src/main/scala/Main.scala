@@ -8,6 +8,8 @@ import org.apache.spark.util.CollectionAccumulator
 object Main {
 
   def main(args: Array[String]): Unit = {
+    val startTime = System.nanoTime()
+
     val spark = SparkSession.builder
       .master("local[*]")
       .appName("Skyline Dominance Spark app")
@@ -19,6 +21,8 @@ object Main {
 //    println(s"Skyline set is: ${skylineSet}")
 
     topKDominating(4, spark, df)
+    val duration = (System.nanoTime() - startTime) / 1e9d
+    println(s"Execution time is: $duration sec")
   }
 
   def skylineQuery(spark: SparkSession, df: DataFrame): util.List[Row] = {
