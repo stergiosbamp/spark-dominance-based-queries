@@ -1,23 +1,12 @@
 import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.util.CollectionAccumulator
 
-import scala.collection.mutable.Set
-import scala.util.control.Breaks._
 
 object SFS {
 
   def computeLocalSkyline(df: DataFrame, localSkylinesAcc: CollectionAccumulator[Row]): Unit = {
 
-    // First point based on SFS is in Skyline
-    val firstPointX = df.first().getDouble(0)
-    val firstPointY = df.first().getDouble(1)
-
-    localSkylinesAcc.add(Row(firstPointX, firstPointY))
-
-    // From the rest of the points excluding the first one
-    // check the rest with the skyline set (accumulator) we have
-    val dfWithoutFirst = df.filter(r => !r.getDouble(0).equals(firstPointX) && !r.getDouble(1).equals(firstPointY))
-    dfWithoutFirst.coalesce(1).foreach( r => {
+    df.coalesce(1).foreach( r => {
 
       val x = r.getDouble(0)
       val y = r.getDouble(1)
