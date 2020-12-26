@@ -20,7 +20,10 @@ object Main {
 //    val skylineSet = skylineQuery(spark, df)
 //    println(s"Skyline set is: ${skylineSet}")
 
-    topKDominating(4, spark, df)
+//    topKDominating(4, spark, df)
+
+    topKSkyline(4, spark, df)
+
     val duration = (System.nanoTime() - startTime) / 1e9d
     println(s"Execution time is: $duration sec")
   }
@@ -60,4 +63,11 @@ object Main {
     }
   }
 
+  def topKSkyline(k: Int, spark: SparkSession, df: DataFrame): Unit = {
+    /**
+     * For this task the algorithm is already implemented in the topKDominating
+     * function, since it's using the Skyline-based Top-k Dominating algorithm
+     * */
+    topKDominating(k, spark, df)
+  }
 }
