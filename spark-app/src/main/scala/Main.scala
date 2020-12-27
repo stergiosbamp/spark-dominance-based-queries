@@ -64,10 +64,27 @@ object Main {
   }
 
   def topKSkyline(k: Int, spark: SparkSession, df: DataFrame): Unit = {
-    /**
-     * For this task the algorithm is already implemented in the topKDominating
-     * function, since it's using the Skyline-based Top-k Dominating algorithm
-     * */
-    topKDominating(k, spark, df)
+    val skylinePoints = skylineQuery(spark, df)
+    val domination = Domination
+    val scoreAcc = spark.sparkContext.longAccumulator("Score accumulator")
+    var dominatingMap = Map[Row, Long]()
+    skylinePoints.forEach( row => {
+      scoreAcc.reset()
+      domination.dominantScore(row, df, scoreAcc)
+      dominatingMap = dominatingMap + (row -> scoreAcc.value)
+    })
+
+    // sort points by the dominance score
+    val sortedDominatingMap = dominatingMap.toSeq.sortWith(_._2 > _._2)
+    val numOfElements = sortedDominatingMap.size
+
+    var i = 1
+    for ((topK, topV) <- sortedDominatingMap) {
+      println(s"Top-$i is point $topK with dominance score $topV")
+      i = i + 1
+    }
+    if (k > numOfElements) {
+      println(s"No other points exist in the skyline. Request a lower k value until $numOfElements")
+    }
   }
 }
