@@ -29,9 +29,9 @@ object Main {
     println(s"Execution time is: $duration sec")
   }
 
-  def skylineQuery(spark: SparkSession, df: DataFrame): util.List[Array[Double]] = {
+  def skylineQuery(spark: SparkSession, df: DataFrame): util.List[Row] = {
     // In each skyline query accumulator must be re-created
-    val skylineAccumulator = spark.sparkContext.collectionAccumulator[Array[Double]]("skylineAccumulator")
+    val skylineAccumulator = spark.sparkContext.collectionAccumulator[Row]("skylineAccumulator")
 
 //    val sumDF = df.withColumn("sum", {df.columns.map(c => col(c)).reduce(_ + _)})
     val sumDF = df.withColumn("sum", df.columns.map(c => col(c)).reduce((c1, c2) => c1 + c2))
