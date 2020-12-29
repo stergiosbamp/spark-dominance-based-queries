@@ -45,7 +45,7 @@ object SFS {
     val atLeastAsGood = Array.fill(dimensions){false}
 
     for ( i <- 0 until dimensions) {
-      if (skylinePoint(i) <= point(i)) {
+      if (skylinePoint(i) < point(i)) {
         atLeastAsGood(i) = true
       }
     }
@@ -53,5 +53,4 @@ object SFS {
     val res = atLeastAsGood.reduce((a, b) => a && b)
     res
   }
-
 }

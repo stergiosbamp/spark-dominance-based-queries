@@ -2,20 +2,26 @@ import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.util.{CollectionAccumulator, LongAccumulator}
 
 object Domination {
+  val sfs = SFS
 
   def dominantScore(row: Row,
                     dataset: DataFrame,
                     scoreAcc: LongAccumulator): Unit = {
-    val pointX = row.getDouble(0)
-    val pointY = row.getDouble(1)
-    var score = 0
+    val dimensions = row.length - 1
+    val pointDimensions = Array.fill(dimensions){0.0}
+
+    for ( i <- 0 until dimensions) {
+      pointDimensions(i) += row.getDouble(i)
+    }
 
     dataset.foreach(r => {
-      val datasetX = r.getDouble(0)
-      val datasetY = r.getDouble(1)
+      val otherPointDimensions = Array.fill(dimensions){0.0}
 
-      if ((pointX < datasetX && pointY <= datasetY) || (pointX <= datasetX && pointY < datasetY)) {
-        score = score + 1
+      for ( i <- 0 until dimensions) {
+        otherPointDimensions(i) += r.getDouble(i)
+      }
+
+      if (sfs.isMultidimensionalPointDominated(dimensions, otherPointDimensions, pointDimensions)) {
         scoreAcc.add(1)
       }
     })
