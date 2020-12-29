@@ -8,15 +8,16 @@ object Domination {
                     dataset: DataFrame,
                     scoreAcc: LongAccumulator): Unit = {
     val dimensions = row.length - 1
-    val pointDimensions = Array.fill(dimensions){0.0}
 
+    // Array that represents the dimensions (coordinates) of the examined point
+    val pointDimensions = Array.fill(dimensions){0.0}
     for ( i <- 0 until dimensions) {
       pointDimensions(i) += row.getDouble(i)
     }
 
     dataset.foreach(r => {
-      val otherPointDimensions = Array.fill(dimensions){0.0}
 
+      val otherPointDimensions = Array.fill(dimensions){0.0}
       for ( i <- 0 until dimensions) {
         otherPointDimensions(i) += r.getDouble(i)
       }

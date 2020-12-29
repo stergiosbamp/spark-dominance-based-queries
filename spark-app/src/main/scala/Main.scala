@@ -18,10 +18,9 @@ object Main {
     val df = spark.read.option("inferSchema", "true").csv("src/main/resources/3d-mock-datapoints.csv")
 
     val skylineSet = skylineQuery(spark, df)
-//    println(s"Skyline set is:")
-//    skylineSet.forEach( e => println(e.mkString(", ")))
+    println(s"Skyline set is: ${skylineSet}")
 
-    topKDominating(2, spark, df)
+//    topKDominating(2, spark, df)
 
 //    topKSkyline(2, spark, df)
 

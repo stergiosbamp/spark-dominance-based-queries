@@ -9,8 +9,9 @@ object SFS {
     df.coalesce(1).foreach( r => {
 
       val dimensions = r.length - 1
-      val pointDimensions = Array.fill(dimensions){0.0}
 
+      // Array that represents the dimensions (coordinates) of the examined point
+      val pointDimensions = Array.fill(dimensions){0.0}
       for ( i <- 0 until dimensions) {
         pointDimensions(i) += r.getDouble(i)
       }
@@ -20,8 +21,8 @@ object SFS {
       var isDominated = false
       value.forEach(skylineRow => {
 
+        // Array that represents the dimensions (coordinates) of the skyline point
         val skylineDimensions = Array.fill(dimensions){0.0}
-
         for ( i <- 0 until dimensions) {
           skylineDimensions(i) += skylineRow.getDouble(i)
         }
@@ -40,8 +41,11 @@ object SFS {
 
   }
 
+  /***
+   * Function that takes a two points and compares them in every dimension.
+   * Returns true if the @param point is dominated by @param skylinePoint.
+   */
   def isMultidimensionalPointDominated(dimensions: Int, point: Array[Double], skylinePoint: Array[Double]): Boolean = {
-//    var isDominated = true
     val atLeastAsGood = Array.fill(dimensions){false}
 
     for ( i <- 0 until dimensions) {
