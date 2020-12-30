@@ -94,7 +94,7 @@ object Main {
       println(s"Top-$i is point $topK with dominance score $topV")
       i = i + 1
       if (i > k){
-        break()
+        return
       }
     }
     if (k > numOfElements) {
