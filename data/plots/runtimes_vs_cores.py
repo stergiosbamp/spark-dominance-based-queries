@@ -20,6 +20,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(cores, topk_corr)
 plt.legend(["Top-k dominating"])
+plt.ylim([0, 780])
 
 # plot runtimes for anticorrelated distributions
 plt.figure()
@@ -28,5 +29,6 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(cores, topk_anti)
 plt.legend(["Top-k dominating"])
+plt.ylim([0, 780])
 
 plt.show()

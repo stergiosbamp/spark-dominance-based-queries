@@ -26,6 +26,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_corr)
 plt.legend(["Top-k dominating"])
+plt.ylim([0, 460])
 
 # plot runtimes for correlated distributions
 plt.figure()
@@ -34,6 +35,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_uni)
 plt.legend(["Top-k dominating"])
+plt.ylim([0, 460])
 
 # plot runtimes for correlated distributions
 plt.figure()
@@ -42,6 +44,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_norm)
 plt.legend(["Top-k dominating"])
+plt.ylim([0, 460])
 
 # plot runtimes for correlated distributions
 plt.figure()
@@ -50,5 +53,6 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_anti)
 plt.legend(["Top-k dominating"])
+plt.ylim([0, 460])
 
 plt.show()

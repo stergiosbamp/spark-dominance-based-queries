@@ -34,6 +34,7 @@ plt.plot(size, skyline_corr)
 plt.plot(size, topk_corr)
 plt.plot(size, topk_skyline_corr)
 plt.legend(["Skyline", "Top-k dominating", "Top-k skyline"])
+plt.ylim([0, 400])
 
 # plot runtimes for uniform distribution
 plt.figure()
@@ -44,6 +45,7 @@ plt.plot(size, skyline_uni)
 plt.plot(size, topk_uni)
 plt.plot(size, topk_skyline_uni)
 plt.legend(["Skyline", "Top-k dominating", "Top-k skyline"])
+plt.ylim([0, 400])
 
 # plot runtimes for normal distribution
 plt.figure()
@@ -54,6 +56,7 @@ plt.plot(size, skyline_norm)
 plt.plot(size, topk_norm)
 plt.plot(size, topk_skyline_norm)
 plt.legend(["Skyline", "Top-k dominating", "Top-k skyline"])
+plt.ylim([0, 400])
 
 # plot runtimes for anticorrelated distribution
 plt.figure()
@@ -64,5 +67,6 @@ plt.plot(size, skyline_anti)
 plt.plot(size, topk_anti)
 plt.plot(size, topk_skyline_anti)
 plt.legend(["Skyline", "Top-k dominating", "Top-k skyline"])
+plt.ylim([0, 400])
 
 plt.show()
