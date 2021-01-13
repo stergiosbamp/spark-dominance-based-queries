@@ -2,7 +2,7 @@ import java.util
 
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.functions.col
-import org.apache.spark.util.CollectionAccumulator
+import scala.util.control.Breaks.break
 
 
 object Main {
@@ -15,14 +15,14 @@ object Main {
       .appName("Skyline Dominance Spark app")
       .getOrCreate()
 
-    val df = spark.read.option("inferSchema", "true").csv("src/main/resources/mock-datapoints.csv")
+    val df = spark.read.option("inferSchema", "true").csv("src/main/resources/3d-mock-datapoints.csv")
 
-//    val skylineSet = skylineQuery(spark, df)
-//    println(s"Skyline set is: ${skylineSet}")
+    val skylineSet = skylineQuery(spark, df)
+    println(s"Skyline set is: ${skylineSet}")
 
-//    topKDominating(4, spark, df)
+//    topKDominating(2, spark, df)
 
-    topKSkyline(4, spark, df)
+//    topKSkyline(2, spark, df)
 
     val duration = (System.nanoTime() - startTime) / 1e9d
     println(s"Execution time is: $duration sec")
@@ -59,7 +59,18 @@ object Main {
       println(s"Top-$i is point $topPoint with dominance score $topValue")
 
       // Remove top point from dataset and repeat
-      changingDf = changingDf.filter(r => !r.getDouble(0).equals(topPoint.getDouble(0)) && !r.getDouble(1).equals(topPoint.getDouble(1)))
+      changingDf = changingDf.filter(r => {
+        val dimensions = r.length - 1
+        val pointDimensions = Array.fill(dimensions){0.0}
+        val topPointDimensions = Array.fill(dimensions){0.0}
+
+        for ( i <- 0 until dimensions) {
+          pointDimensions(i) += r.getDouble(i)
+          topPointDimensions(i) += topPoint.getDouble(i)
+        }
+
+        !pointDimensions.sameElements(topPointDimensions)
+      })
     }
   }
 
@@ -82,6 +93,9 @@ object Main {
     for ((topK, topV) <- sortedDominatingMap) {
       println(s"Top-$i is point $topK with dominance score $topV")
       i = i + 1
+      if (i > k){
+        return
+      }
     }
     if (k > numOfElements) {
       println(s"No other points exist in the skyline. Request a lower k value until $numOfElements")
