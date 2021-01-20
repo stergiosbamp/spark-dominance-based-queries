@@ -11,24 +11,39 @@ import scala.util.control.Breaks.break
 object Main {
 
   def main(args: Array[String]): Unit = {
-    val startTime = System.nanoTime()
 
     val spark = SparkSession.builder
       .master("local[*]")
       .appName("Skyline Dominance Spark app")
       .getOrCreate()
 
-    val df = spark.read.option("inferSchema", "true").csv("../data/correlation-1000000.csv")
+    experiment(spark, "../data/correlation-1000000.csv", k = 10)
+
+  }
+
+  def experiment(spark: SparkSession, filename: String, k: Int): Unit = {
+    val df = spark.read.option("inferSchema", "true").csv(filename)
+
+    val startTime = System.nanoTime()
 
     val skylineSet = skylineQuery(spark, df)
     println(s"Skyline set is: ${skylineSet}")
+    val skylineTime = System.nanoTime()
+    val skylineTimeSecs = (System.nanoTime() - startTime) / 1e9d
 
-//    topKDominating(2, spark, df)
-//
-//    topKSkyline(2, spark, df)
+    topKDominating(k, spark, df)
+    val topKDominatingTime = System.nanoTime()
+    val topKDominatingTimeSecs = (System.nanoTime() - skylineTime) / 1e9d
 
-    val duration = (System.nanoTime() - startTime) / 1e9d
-    println(s"Execution time is: $duration sec")
+    topKSkyline(k, spark, df)
+    val topKSkylineTime = System.nanoTime()
+    val topKSkylineTimeSecs = (System.nanoTime() - topKDominatingTime) / 1e9d
+
+    println(filename)
+    println(s"Total execution times are: ${skylineTimeSecs + topKDominatingTimeSecs + topKSkylineTimeSecs}")
+    println(s"Skyline query time: $skylineTimeSecs")
+    println(s"Top K dominating time: $topKDominatingTimeSecs")
+    println(s"Top K skyline time: $topKSkylineTimeSecs")
   }
 
   def skylineQuery(spark: SparkSession, df: DataFrame): ArrayBuffer[Row] = {
