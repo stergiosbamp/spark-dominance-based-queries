@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 dimensions = [2, 4, 8]
 
 
-uni_skyline= [7.41, 14.23, 196.72]  # Skyline query times
-uni_top_k_dominating = [36.04, 948.28, 13109.32]  # Top-k dominating
-uni_top_k_skyline = [8.99, 67.15, 928.30]  # Top-k skyline
+uni_skyline= [5.7798, 17.3254, 278.5623]  # Skyline query times
+uni_top_k_dominating = [46.852, 146.318796, 2125.019312]  # Top-k dominating
+uni_top_k_skyline = [11.687, 53.26, 659.45]  # Top-k skyline
 
-norm_skyline = [7.37, 17.11, 169.16]  # Skyline query times
-norm_top_k_dominating = [43.89, 976.58, 9656.78]  # Top-k dominating
-norm_top_k_skyline = [11.52, 71.88, 710.77]  # Top-k skyline
+norm_skyline = [5.7486, 24.3245, 298.34534]  # Skyline query times
+norm_top_k_dominating = [57.057, 202.267065, 2708.12492]  # Top-k dominating
+norm_top_k_skyline = [14.976, 68.54, 856.32]  # Top-k skyline
 
 
 # plot options
@@ -23,7 +23,7 @@ plt.figure()
 plt.title("Uniform distribution")
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
-plt.ylim(top=14000)
+plt.ylim(top=2800)
 plt.plot(dimensions, uni_skyline)
 plt.plot(dimensions, uni_top_k_dominating)
 plt.plot(dimensions, uni_top_k_skyline)
@@ -34,7 +34,7 @@ plt.figure()
 plt.title("Normal distribution")
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
-plt.ylim(top=14000)
+plt.ylim(top=2800)
 plt.plot(dimensions, norm_skyline)
 plt.plot(dimensions, norm_top_k_dominating)
 plt.plot(dimensions, norm_top_k_skyline)
