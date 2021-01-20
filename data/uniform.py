@@ -16,4 +16,4 @@ plt.scatter(x[:, 0], x[:, 1])
 plt.show()
 
 # save the data into csv file with 5 decimals
-np.savetxt("uniform.csv", x, delimiter=",", fmt="%.5f")
+np.savetxt("{}d-uniform-{}.csv".format(DIM, NUM_SAMPLES), x, delimiter=",", fmt="%.5f")
