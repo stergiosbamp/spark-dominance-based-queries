@@ -1,12 +1,20 @@
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Dataset, Row}
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.util.CollectionAccumulator
 
 import scala.collection.mutable.ArrayBuffer
 
-
+/**
+ * Object for implementing the Skyline Filter Skyline (SFS) algorithm.
+ */
 object SFS {
 
+  /**
+   * Function that computes the global skyline points for the dataset.
+   *
+   * @param skylineAccumulator Accumulator that holds all the local skyline points.
+   * @return The global skyline set
+   */
   def computeFinalSkyline(skylineAccumulator: CollectionAccumulator[Row]): ArrayBuffer[Row] = {
     var sortedPoints = new ArrayBuffer[Row]()
     skylineAccumulator.value.forEach( r => {
@@ -51,6 +59,14 @@ object SFS {
     finalSkyline
   }
 
+  /**
+   * Function that computes the skyline points for each partition using the distributed concept of Spark.
+   *
+   * For each partition we compute the local skyline points and adds them in an accumulator.
+   *
+   * @param df The DataFrame holding the objects of the dataset.
+   * @param skylineAccumulator The accumulator to be populated with the local skyline points.
+   */
   def computeLocalSkyline(df: DataFrame, skylineAccumulator: CollectionAccumulator[Row]): Unit = {
     val rowsRDD: RDD[Row] = df.rdd
 

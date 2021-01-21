@@ -1,12 +1,7 @@
-import java.util
-
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.functions.col
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
-import scala.util.control.Breaks.break
-
 
 object Main {
 
@@ -17,10 +12,17 @@ object Main {
       .appName("Skyline Dominance Spark app")
       .getOrCreate()
 
-    experiment(spark, "../data/correlation-1000000.csv", k = 10)
+    experiment(spark, "../data/2d-correlation-1000000.csv", 10)
 
   }
 
+  /** Function that acts as an experiment and runs the three tasks of the project.
+   * For each task takes timestamps per task and prints them.
+   *
+   * @param spark The SparkSession object.
+   * @param filename The filename for the distribution to run the experiment.
+   * @param k The user-defined k value for the top-k queries.
+   */
   def experiment(spark: SparkSession, filename: String, k: Int): Unit = {
     val df = spark.read.option("inferSchema", "true").csv(filename)
 
@@ -46,6 +48,13 @@ object Main {
     println(s"Top K skyline time: $topKSkylineTimeSecs")
   }
 
+  /**
+   * Function for the skyline query.
+   *
+   * @param spark The SparkSession object.
+   * @param df The DataFrame holding the objects of the dataset.
+   * @return The array with the global skyline points of the dataset.
+   */
   def skylineQuery(spark: SparkSession, df: DataFrame): ArrayBuffer[Row] = {
     // In each skyline query accumulator must be re-created
     val skylineAccumulator = spark.sparkContext.collectionAccumulator[Row]("skylineAccumulator")
@@ -58,6 +67,13 @@ object Main {
     sfs.computeFinalSkyline(skylineAccumulator)
   }
 
+  /**
+   * Function for the top-k dominating query.
+   *
+   * @param k user-defined k value.
+   * @param spark The SparkSession object.
+   * @param df The DataFrame holding the objects of the dataset.
+   */
   def topKDominating(k: Int, spark: SparkSession, df: DataFrame): Unit = {
     var changingDf = df
     for (i <- 1 to k) {
@@ -93,6 +109,13 @@ object Main {
     }
   }
 
+  /**
+   * Function for the top-k skyline query.
+   *
+   * @param k user-defined k value.
+   * @param spark The SparkSession object.
+   * @param df The DataFrame holding the objects of the dataset
+   */
   def topKSkyline(k: Int, spark: SparkSession, df: DataFrame): Unit = {
     val skylinePoints = skylineQuery(spark, df)
     val domination = Domination
