@@ -1,9 +1,21 @@
 import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.util.{CollectionAccumulator, LongAccumulator}
+import org.apache.spark.util.LongAccumulator
 
+/**
+ * Object to provide functionality to compute domination scores
+ * to all dimensions.
+ */
 object Domination {
   val sfs = SFS
 
+  /**
+   * Function that computes the dominance score for a given point (Row)
+   * against the dataset and add the score in an accumulator.
+   *
+   * @param row The examined point.
+   * @param dataset The DataFrame holding the objects of the dataset
+   * @param scoreAcc The accumulator to be populated by the score of the point by executors.
+   */
   def dominantScore(row: Row,
                     dataset: DataFrame,
                     scoreAcc: LongAccumulator): Unit = {

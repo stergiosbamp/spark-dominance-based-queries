@@ -9,19 +9,20 @@ NUM_SAMPLES = 1000
 rng = default_rng(1)
 
 # The desired mean values
-mean = [5, 5]
+MEAN = [5, 5]
 # The desired covariance matrix
-cov = [
+COV = [
     [3.5, 2.6],
     [2.6, 3.5]
 ]
 
 # Generate the random samples.
-x = rng.multivariate_normal(mean, cov, size=NUM_SAMPLES)
+x = rng.multivariate_normal(MEAN, COV, size=NUM_SAMPLES)
 
 # plot
 plt.scatter(x[:, 0], x[:, 1])
 plt.show()
 
 # save the data into csv file with 5 decimals
-np.savetxt("correlation.csv", x, delimiter=",", fmt="%.5f")
+dims = len(MEAN)
+np.savetxt("{}d-correlation-{}.csv".format(dims, NUM_SAMPLES), x, delimiter=",", fmt="%.5f")

@@ -4,16 +4,16 @@ import matplotlib.pyplot as plt
 topk = [10, 20, 40]
 
 # runtimes for correlated (task 2 -> top-k dominating)
-topk_corr = [26.97, 50.03, 134.83]
+topk_corr = [35.061, 80.048, 188.762]
 
 # runtimes for uniform (task 2 -> top-k dominating)
-topk_uni = [36.04, 75.79, 210.62]
+topk_uni = [46.852, 121.264, 294.868]
 
 # runtimes for normal (task 2 -> top-k dominating)
-topk_norm = [43.89, 84.38, 239.98]
+topk_norm = [57.057, 135.008, 335.972]
 
 # runtimes for anticorrelated (task 2 -> top-k dominating)
-topk_anti = [70.31, 152.12, 451.77]
+topk_anti = [91.403, 243.392, 632.478]
 
 # plot options
 xlabel = "Top-k"
@@ -26,7 +26,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_corr)
 plt.legend(["Top-k dominating"])
-plt.ylim([0, 460])
+plt.ylim([0, 650])
 
 # plot runtimes for correlated distributions
 plt.figure()
@@ -35,7 +35,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_uni)
 plt.legend(["Top-k dominating"])
-plt.ylim([0, 460])
+plt.ylim([0, 650])
 
 # plot runtimes for correlated distributions
 plt.figure()
@@ -44,7 +44,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_norm)
 plt.legend(["Top-k dominating"])
-plt.ylim([0, 460])
+plt.ylim([0, 650])
 
 # plot runtimes for correlated distributions
 plt.figure()
@@ -53,6 +53,6 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(topk, topk_anti)
 plt.legend(["Top-k dominating"])
-plt.ylim([0, 460])
+plt.ylim([0, 650])
 
 plt.show()

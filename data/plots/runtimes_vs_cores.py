@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 cores = [1, 2, 4]
 
 # runtimes for correlated (task 2 -> top-k dominating)
-topk_corr = [157.3, 112.77, 81.79]
+topk_corr = [87.26310377, 54.1166535, 35.061]
 
 #runtimes for anticorrelation (task 2 -> top-k dominating)
-topk_anti = [769.51, 545.57, 384.19]
+topk_anti = [226.0694232, 139.2524705, 91.403]
 
 # plot options
 xlabel = "Num cores"
@@ -20,7 +20,7 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(cores, topk_corr)
 plt.legend(["Top-k dominating"])
-plt.ylim([0, 780])
+plt.ylim([0, 240])
 
 # plot runtimes for anticorrelated distributions
 plt.figure()
@@ -29,6 +29,6 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.plot(cores, topk_anti)
 plt.legend(["Top-k dominating"])
-plt.ylim([0, 780])
+plt.ylim([0, 240])
 
 plt.show()
