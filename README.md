@@ -1,39 +1,20 @@
-# scalable-dominance-based-queries
-This is the repository for the Big Data course project.
+# Dominance-based queries on Apache Spark.
 
-## Task
-Design and implement distributed algorithms for processing of dominance-based queries that can scale to large amount of data and multiple machines.
+Skyline queries are a popular and powerful paradigm for extracting interesting objects from a multi-dimensional dataset. Given a set D of d-dimensional objects (or points), the skyline set of R is the set of Pareto-optimal, or undominated, points in D
 
-Contributors:
+## Algorithms
 
-* Stergios Bampakis
-* Themistoklis Spanoudis
+1. Skyline query based on the Sort Filter Skyline (SFS) algorithm.
 
+2. Top-k dominating based on the Skyline-based Top-k Dominating (STD).
 
-## Dataset
-We will generate multidimensional synthetic datasets that follow a correlated, uniform, normal, and anticorrelated distribution. Each type of distribution poses a different level of difficulty for the algorithms.
+3. Top-k dominating on Skyline
 
-### Project setup
+## Datasets
 
-#### Generating the synthetic datasets
-Create virtual environment
+There are 4 distributions of synthetic datasets to run the algorithms, from 2-d to 10-d.
 
-```
-$ python3 -m venv venv
-$ source venv/bin/activate
-```
-
-Upgrade pip
-
-```
-$ python -m pip install --upgrade pip
-```
-
-Install dependencies
-
-```
-$ pip install -r requirements.txt
-```
-
-#### Applying the algorithms
-To be completed soon.
+1. Correlated
+2. Uniform
+3. Normal
+4. Anti-correlated
